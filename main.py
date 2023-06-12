@@ -1,26 +1,19 @@
 """
-Transformaca pomiędzy przestrzeniami barw,
-Negatyw,
-Po binaryzacji:
-	Erozja (dla sąsiedztwa ośmiospójnego i czterospójnego)
-	Otwarcia i Domknięcia
-Jeden wybrany filtr (proszę o rozsądne korzystanie, zamiana wszystkich pikseli na czarne lub białe będzie przesadą),
-Wyrównanie histogramu,
-Kompresja,
-Wygładzanie przez uśrednianie;
+Obrazy możemy zapisać jako pliki graficzne, lecz edycja nadal będzie odbywać się na "oryginale" aż do zakończenia działania programu.
+Przy zapisywaniu możemy wybrać nazwę pliku.
+Po edycji możemy podejrzeć obraz.
 
-Wymagania ogólne:
 Klasowość, hermetyzacja i kreatywna obsługa błędów. Dodać dziedziczenie.
 Kod czysty, czytelny, pisany w języku polskim (przynajmniej metody i funkcje, zmienne wybaczę).
 Optymalizacja kodu - nie powtarzać zbędnie kodu, lepiej zrobić funkcję itd.
 """
 
-import PIL
+from PIL import Image, ImageOps
 
 class EdytorObrazow:
     def __init__(self, sciezka):
         try:
-            self.zdjecie=PIL.Image.open(sciezka)
+            self.zdjecie=Image.open(sciezka)
         except IOError: #IOError wynik nieprawidłowej nazwy pliku lub lokalizacji
             print("Nie można otworzyć tego pliku")
             return
@@ -29,7 +22,8 @@ class EdytorObrazow:
         pass
 
     def negatyw(self):
-        pass
+        zmienione = ImageOps.invert(self.zdjecie)
+        return zmienione
 
     def erozja(self,sasiedztwo):
         pass
@@ -37,7 +31,7 @@ class EdytorObrazow:
     def otwarcie(self):
         pass
 
-    def zamkniecie(self):
+    def domkniecie(self):
         pass
 
     def binaryzacja(self):
@@ -53,7 +47,7 @@ class EdytorObrazow:
         elif wybor == '2':
             self.zdjecie = self.otwarcie()
         elif wybor == '3':
-            self.zdjecie = self.zamkniecie()
+            self.zdjecie = self.domkniecie()
 
     def filtr(self):
         pass
@@ -61,3 +55,63 @@ class EdytorObrazow:
     def wyrownanie_histogramu(self):
         pass
 
+    def kompresja(self):
+        pass
+
+    def wygladzanie(self):
+        pass
+
+    def zapisz_obraz(self,nazwa_pliku):
+        self.zdjecie.save(nazwa_pliku)
+        print("Obraz został zapisany jako", nazwa_pliku )
+        pass
+
+    def wyswietl(self):
+        self.zdjecie.show()
+
+def main():
+
+    sciezka_zdjecia = input("Podaj ścieżkę do pliku obrazu: ")
+    Edycja = EdytorObrazow(sciezka_zdjecia)
+
+    while True:
+        print("\nWYBIERZ CO MA ZROBIĆ KONSOLA ARTYSTKA")
+        print("1. Transformacja pomiędzy przestrzeniami barw")
+        print("2. Negatyw")
+        print("3. Binaryzacja")
+        print("4. Filtr")
+        print("5. Wyrównanie histogramu")
+        print("6. Kompresja")
+        print("7. Wygładzanie przez uśrednianie")
+        print("8. Zapisz obraz")
+        print("9. Wyjście")
+
+        wybor = input("Wybierz opcję: ")
+
+        if wybor == '1':
+            Edycja.zdjecie = Edycja.transformacja()
+        elif wybor == '2':
+            Edycja.zdjecie = Edycja.negatyw()
+        elif wybor == '3':
+            Edycja.zdjecie = Edycja.binaryzacja()
+        elif wybor == '4':
+            Edycja.zdjecie = Edycja.filtr()
+        elif wybor == '5':
+            Edycja.zdjecie = Edycja.wyrownanie_histogramu()
+        elif wybor == '6':
+            Edycja.zdjecie = Edycja.kompresja()
+        elif wybor == '7':
+            Edycja.zdjecie = Edycja.wygladzanie()
+        elif wybor == '8':
+            nazwa = input("Podaj nazwę przerobionego obrazu: ")
+            Edycja.zapisz_obraz(nazwa)
+        elif wybor == '9':
+            break
+        else:
+            print("Nieprawidlowy wybór. Wybierz coś z menu")
+
+        Edycja.wyswietl()
+
+
+if __name__ == "__main__":
+    main()
