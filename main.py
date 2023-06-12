@@ -4,9 +4,10 @@ class EdytorObrazow:
     def __init__(self, sciezka):
         try:
             self.zdjecie=Image.open(sciezka)
+            print("Podano poprawna ścieżkę")
         except IOError: #IOError wynik nieprawidłowej nazwy pliku lub lokalizacji
             print("Nie można otworzyć tego pliku")
-            return
+
 
     @property
     def zdjecie(self):
@@ -17,7 +18,7 @@ class EdytorObrazow:
         self._zdjecie = nowe_zdjecie
 
     def transformacja(self):
-        transformed_zdjecie = self.zdjecie.convert('L')  # Konwersja do skali szarości
+        transformed_zdjecie = self.zdjecie.convert('LA')  # Konwersja do skali szarości
         return transformed_zdjecie
 
     def negatyw(self):
@@ -45,7 +46,7 @@ class EdytorObrazow:
         return domkniete
 
     def binaryzacja(self):
-        binary = self.zdjecie.convert('1')  # Konwersja do obrazu binarnego (czarno-białego)
+        binary = self.zdjecie.convert('1')  #Konwersja do obrazu binarnego (czarno-białego)
         return binary
 
     def filtr(self):
@@ -75,8 +76,16 @@ class EdytorObrazow:
         self.zdjecie.show()
 
 def main():
+
     sciezka_zdjecia = input("Podaj ścieżkę do pliku obrazu: ")
     Edycja = EdytorObrazow(sciezka_zdjecia)
+
+#while True:
+#        try:
+#            Edycja
+#            break
+#        except ValueError:
+#            print("Jeszcze raz")
 
     while True:
         print("\nWYBIERZ CO MA ZROBIĆ KONSOLA ARTYSTKA")
