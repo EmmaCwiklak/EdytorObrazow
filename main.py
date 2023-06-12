@@ -8,7 +8,7 @@ Kod czysty, czytelny, pisany w języku polskim (przynajmniej metody i funkcje, z
 Optymalizacja kodu - nie powtarzać zbędnie kodu, lepiej zrobić funkcję itd.
 """
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageFilter
 
 class EdytorObrazow:
     def __init__(self, sciezka):
@@ -19,14 +19,23 @@ class EdytorObrazow:
             return
 
     def transformacja(self):
-        pass
+        transformed_zdjecie = self.zdjecie.convert('L')  # Konwersja do skali szarości
+        return transformed_zdjecie
 
     def negatyw(self):
         zmienione = ImageOps.invert(self.zdjecie)
         return zmienione
 
     def erozja(self,sasiedztwo):
-        pass
+        if sasiedztwo == '4':  # Czterospójne sąsiedztwo
+            po_erozji = self.zdjecie.filter(ImageFilter.MinFilter(3))
+        elif sasiedztwo == '8':  # Ośmiospójne sąsiedztwo
+            po_erozji = self.zdjecie.filter(ImageFilter.MinFilter(8))
+        else:
+            print("Nieprawidłowe sąsiedztwo")
+            return None
+        return po_erozji
+
 
     def otwarcie(self):
         pass
@@ -63,14 +72,13 @@ class EdytorObrazow:
 
     def zapisz_obraz(self,nazwa_pliku):
         self.zdjecie.save(nazwa_pliku)
-        print("Obraz został zapisany jako", nazwa_pliku )
+        print("Obraz został zapisany jako", nazwa_pliku)
         pass
 
     def wyswietl(self):
         self.zdjecie.show()
 
 def main():
-
     sciezka_zdjecia = input("Podaj ścieżkę do pliku obrazu: ")
     Edycja = EdytorObrazow(sciezka_zdjecia)
 
@@ -109,9 +117,7 @@ def main():
             break
         else:
             print("Nieprawidlowy wybór. Wybierz coś z menu")
-
         Edycja.wyswietl()
-
 
 if __name__ == "__main__":
     main()
