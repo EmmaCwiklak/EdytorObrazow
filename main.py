@@ -26,46 +26,41 @@ class EdytorObrazow:
         zmienione = ImageOps.invert(self.zdjecie)
         return zmienione
 
-    def erozja(self,sasiedztwo):
+    def erozja(self, sasiedztwo):
         if sasiedztwo == '4':  # Czterospójne sąsiedztwo
             po_erozji = self.zdjecie.filter(ImageFilter.MinFilter(3))
         elif sasiedztwo == '8':  # Ośmiospójne sąsiedztwo
-            po_erozji = self.zdjecie.filter(ImageFilter.MinFilter(8))
+            po_erozji = self.zdjecie.filter(ImageFilter.MinFilter(9))
         else:
             print("Nieprawidłowe sąsiedztwo")
             return None
         return po_erozji
 
-
     def otwarcie(self):
-        pass
+        otwarte = self.zdjecie.filter(ImageFilter.MinFilter(3))
+        otwarte = otwarte.filter(ImageFilter.MaxFilter(3))
+        return otwarte
 
     def domkniecie(self):
-        pass
+        domkniete = self.zdjecie.filter(ImageFilter.MaxFilter(3))
+        domkniete = domkniete.filter(ImageFilter.MinFilter(3))
+        return domkniete
 
     def binaryzacja(self):
-        print("Wybierz co zrobić po binaryzacji: ")
-        print("1. Erozja")
-        print("2. Otwarcie")
-        print("3. Domknięcie")
-
-        wybor = input("Twoja opcja: ")
-        if wybor == '1':
-            sasiedztwo = input("Wybierz sąsiedztwo (4 lub 8): ")
-            self.zdjecie = self.erozja(sasiedztwo)
-        elif wybor == '2':
-            self.zdjecie = self.otwarcie()
-        elif wybor == '3':
-            self.zdjecie = self.domkniecie()
+        binary = self.zdjecie.convert('1')  # Konwersja do obrazu binarnego (czarno-białego)
+        return binary
 
     def filtr(self):
-        pass
+        edge = self.zdjecie.filter(ImageFilter.FIND_EDGES)
+        return edge
 
     def wyrownanie_histogramu(self):
-        pass
+        histogram = ImageOps.equalize(self.zdjecie)
+        return histogram
 
     def kompresja(self):
-        pass
+        skompresowane = self.zdjecie.convert('P', palette=Image.ADAPTIVE, colors=64)
+        return skompresowane
 
     def wygladzanie(self):
         pass
@@ -102,6 +97,20 @@ def main():
             Edycja.zdjecie = Edycja.negatyw()
         elif wybor == '3':
             Edycja.zdjecie = Edycja.binaryzacja()
+            print("Wybierz co zrobić po binaryzacji: ")
+            print("1. Erozja")
+            print("2. Otwarcie")
+            print("3. Domknięcie")
+
+            wybor = input("Twoja opcja: ")
+            if wybor == '1':
+                sasiedztwo = input("Wybierz sąsiedztwo (4 lub 8): ")
+                Edycja.zdjecie = Edycja.erozja(sasiedztwo)
+            elif wybor == '2':
+                Edycja.zdjecie = Edycja.otwarcie()
+            elif wybor == '3':
+                Edycja.zdjecie = Edycja.domkniecie()
+
         elif wybor == '4':
             Edycja.zdjecie = Edycja.filtr()
         elif wybor == '5':
