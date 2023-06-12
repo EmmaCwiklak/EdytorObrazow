@@ -1,13 +1,3 @@
-"""
-Obrazy możemy zapisać jako pliki graficzne, lecz edycja nadal będzie odbywać się na "oryginale" aż do zakończenia działania programu.
-Przy zapisywaniu możemy wybrać nazwę pliku.
-Po edycji możemy podejrzeć obraz.
-
-Klasowość, hermetyzacja i kreatywna obsługa błędów. Dodać dziedziczenie.
-Kod czysty, czytelny, pisany w języku polskim (przynajmniej metody i funkcje, zmienne wybaczę).
-Optymalizacja kodu - nie powtarzać zbędnie kodu, lepiej zrobić funkcję itd.
-"""
-
 from PIL import Image, ImageOps, ImageFilter
 
 class EdytorObrazow:
@@ -63,12 +53,12 @@ class EdytorObrazow:
         return skompresowane
 
     def wygladzanie(self):
-        pass
+        wygladzony = self.zdjecie.filter(ImageFilter.SMOOTH)
+        return wygladzony
 
     def zapisz_obraz(self,nazwa_pliku):
         self.zdjecie.save(nazwa_pliku)
         print("Obraz został zapisany jako", nazwa_pliku)
-        pass
 
     def wyswietl(self):
         self.zdjecie.show()
