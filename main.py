@@ -8,6 +8,14 @@ class EdytorObrazow:
             print("Nie można otworzyć tego pliku")
             return
 
+    @property
+    def zdjecie(self):
+        return self._zdjecie
+
+    @zdjecie.setter
+    def zdjecie(self, nowe_zdjecie):
+        self._zdjecie = nowe_zdjecie
+
     def transformacja(self):
         transformed_zdjecie = self.zdjecie.convert('L')  # Konwersja do skali szarości
         return transformed_zdjecie
@@ -57,8 +65,11 @@ class EdytorObrazow:
         return wygladzony
 
     def zapisz_obraz(self,nazwa_pliku):
-        self.zdjecie.save(nazwa_pliku)
-        print("Obraz został zapisany jako", nazwa_pliku)
+        try:
+            self.zdjecie.save(nazwa_pliku)
+            print("Obraz został zapisany jako", nazwa_pliku)
+        except IOError:
+            print("Wystąpił błąd podczas zapisywania obrazu.")
 
     def wyswietl(self):
         self.zdjecie.show()
@@ -110,8 +121,13 @@ def main():
         elif wybor == '7':
             Edycja.zdjecie = Edycja.wygladzanie()
         elif wybor == '8':
-            nazwa = input("Podaj nazwę przerobionego obrazu: ")
-            Edycja.zapisz_obraz(nazwa)
+            while True:
+                nazwa = input("Podaj nazwę przerobionego obrazu: ")
+                try:
+                    Edycja.zapisz_obraz(nazwa)
+                    break
+                except ValueError:
+                    print("Nieprawidłowa nazwa pliku. Spróbuj ponownie z rozszerzeniem.")
         elif wybor == '9':
             break
         else:
