@@ -11,7 +11,6 @@ class EdytorObrazow:
                 print("Nie można otworzyć tego pliku")
                 sciezka=input("Podaj poprawną ścieżkę do pliku: ")
 
-
     @property
     def zdjecie(self):
         return self._zdjecie
@@ -21,7 +20,7 @@ class EdytorObrazow:
         self._zdjecie = nowe_zdjecie
 
     def transformacja(self):
-        transformed_zdjecie = self.zdjecie.convert('LA')  # Konwersja do skali szarości
+        transformed_zdjecie = self.zdjecie.convert('LA')  #do skali szarości
         return transformed_zdjecie
 
     def negatyw(self):
