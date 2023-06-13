@@ -2,11 +2,14 @@ from PIL import Image, ImageOps, ImageFilter
 
 class EdytorObrazow:
     def __init__(self, sciezka):
-        try:
-            self.zdjecie=Image.open(sciezka)
-            print("Podano poprawna ścieżkę")
-        except IOError: #IOError wynik nieprawidłowej nazwy pliku lub lokalizacji
-            print("Nie można otworzyć tego pliku")
+        while True:
+            try:
+                self.zdjecie=Image.open(sciezka)
+                print("Podano poprawna ścieżkę")
+                break
+            except IOError: #IOError wynik nieprawidłowej nazwy pliku lub lokalizacji
+                print("Nie można otworzyć tego pliku")
+                sciezka=input("Podaj poprawną ścieżkę do pliku: ")
 
 
     @property
@@ -79,13 +82,6 @@ def main():
 
     sciezka_zdjecia = input("Podaj ścieżkę do pliku obrazu: ")
     Edycja = EdytorObrazow(sciezka_zdjecia)
-
-#while True:
-#        try:
-#            Edycja
-#            break
-#        except ValueError:
-#            print("Jeszcze raz")
 
     while True:
         print("\nWYBIERZ CO MA ZROBIĆ KONSOLA ARTYSTKA")
